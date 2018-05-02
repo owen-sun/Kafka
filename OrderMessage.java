@@ -1,15 +1,15 @@
 package com.ibm.marketplace.checkout.orderhub.ordersubmit.messagehub;
 
 /**
- * data bean for order msg to message hub
+ * data bean of order msg to BMX message hub
  * @author zgsun
  *
  */
 public class OrderMessage {
-	private String msgSrc; //order source: renewal, BP Q2O, QTM, 3PM 
+	private String msgSrc; //order source: renewal, BP Q2O, QTM, 3PM etc
 	private String msgType;// order type: DSW, GAIA
-	private long msgID;//unique ID of the msg
-	private String orderDocID;//cloudnt order doc ID
+	private long msgID;//unique ID of the msg, use the msg timestamp here
+	private String orderDocID;//cloudant document ID
 
 	public String getMsgType() {
 		return msgType;
