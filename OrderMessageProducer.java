@@ -32,9 +32,6 @@ public class OrderMessageProducer {
 				// load a properties file
 				PROP.load(input);
 
-				// get the property value and print it out
-				System.out.println(PROP.values());
-
 			} catch (IOException ex) {
 				LOGGER.error("failed to initiaze message producer");
 				ex.printStackTrace();
@@ -56,9 +53,8 @@ public class OrderMessageProducer {
 			return false;
 		}
 
-		OrderMessage msg = new OrderMessage();
-
 		try {
+			OrderMessage msg = new OrderMessage();
 			msg.setMsgID(System.currentTimeMillis());
 			msg.setMsgSrc("Self-Serve");
 			msg.setMsgType("DSW");
@@ -67,18 +63,21 @@ public class OrderMessageProducer {
 			ProducerRecord<String, OrderMessage> record = new ProducerRecord<String, OrderMessage>(topicName,
 					String.valueOf(msg.getMsgType()), msg);
 
+            LOGGER.debug("============================================================");
 			LOGGER.debug("start sending order submission msg: " + msg.getMsgID());
 			
 			kafkaProducer.send(record, new Callback() {
-	            public void onCompletion(RecordMetadata metadata, Exception e) {
-	              if (e != null) {
-	                e.printStackTrace();
-	              }
-	              LOGGER.error("end sending order submission msg, parition num: " + String.valueOf(metadata.partition()));
-				  LOGGER.error("end sending order submission msg, offset: " + String.valueOf(metadata.offset()));
-	            }}
-	            );
-			
+				public void onCompletion(RecordMetadata metadata, Exception e) {
+					if (e != null) {
+						LOGGER.error("error on sending order msg XXXXXXXXXXXXXX" + + msg.getMsgID());
+						e.printStackTrace();
+					}else {
+						LOGGER.debug("successfully send order submission msg, partition num: " + String.valueOf(metadata.partition() + "offset:" +String.valueOf(metadata.offset()) ));
+					}
+					
+				}
+			});
+			LOGGER.debug("************************************************************");
 			kafkaProducer.close();
 
 		} catch (Exception e) {
