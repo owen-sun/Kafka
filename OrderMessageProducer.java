@@ -72,7 +72,7 @@ public class OrderMessageProducer {
 						LOGGER.error("error on sending order msg XXXXXXXXXXXXXX" + + msg.getMsgID());
 						e.printStackTrace();
 					}else {
-						LOGGER.debug("successfully send order submission msg, partition num: " + String.valueOf(metadata.partition() + "offset:" +String.valueOf(metadata.offset()) ));
+						LOGGER.debug("successfully send order submission msg, partition num: " + String.valueOf(metadata.partition() + ", offset:" +String.valueOf(metadata.offset()) ));
 					}
 					
 				}
