@@ -77,8 +77,8 @@ public class OrderMessageProducer {
 					
 				}
 			});
-			LOGGER.debug("************************************************************");
-			kafkaProducer.close();
+			kafkaProducer.flush();
+//			kafkaProducer.close();
 
 		} catch (Exception e) {
 			LOGGER.error("error on sending order to message hub.");
@@ -110,7 +110,10 @@ public class OrderMessageProducer {
 
 	public static void main(String[] args) {
 		OrderMessageProducer producer = new OrderMessageProducer();
-		producer.sendOrder();
+		for(int i=0; i<5;i++) {
+			producer.sendOrder();
+		}
+		producer.kafkaProducer.close();
 	}
 
 }
